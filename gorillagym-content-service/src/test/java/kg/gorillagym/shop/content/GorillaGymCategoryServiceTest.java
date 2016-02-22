@@ -32,13 +32,6 @@ public class GorillaGymCategoryServiceTest {
     }
 
     @Test
-//    @Ignore("This is integration test")
-    public void testGetAll() throws Exception {
-        List<Category> all = categoryService.getAll();
-        for (Category item : all) System.out.println(item);
-    }
-
-    @Test
     public void testGetAllSorted() throws Exception {
         ((GorillaGymCategoryService)categoryService)
                 .setRestClient(new MockRestClient());
