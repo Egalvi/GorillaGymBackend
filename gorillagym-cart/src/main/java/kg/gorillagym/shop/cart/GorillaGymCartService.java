@@ -3,11 +3,15 @@ package kg.gorillagym.shop.cart;
 import static kg.gorillagym.shop.Constants.URL;
 import kg.gorillagym.shop.cart.impl.RestClient;
 import kg.gorillagym.shop.cart.impl.RestClientFactory;
+import retrofit.Call;
+import org.apache.commons.io.IOUtils;
 import ru.egalvi.shop.Cart;
 import ru.egalvi.shop.CartItem;
 import ru.egalvi.shop.CartService;
 import ru.egalvi.shop.ClientData;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,5 +35,26 @@ public class GorillaGymCartService implements CartService {
             }
         }
         restClient.submitOrder(new Order(orderItems, clientData));
+    }
+
+    public CaptureImpl getCapture(){
+        Call<CaptureImpl> captureCall = restClient.getCapture();
+        try {
+            CaptureImpl capture = captureCall.execute().body();
+                String imgUrl = capture.getImagehash();
+                if(imgUrl != null && !imgUrl.equals("")) {
+                    try (InputStream in = new java.net.URL(imgUrl).openStream()) {
+                        byte[] bytes = IOUtils.toByteArray(in);
+                        capture.setImagedata(bytes);
+                    } catch (IOException e) {
+                        //TODO make own exception and handle it somewhere
+                        throw new RuntimeException(e);
+                    }
+                }
+            return capture;
+        } catch (IOException e) {
+            //TODO make own exception and handle it somewhere
+            throw new RuntimeException(e);
+        }
     }
 }
