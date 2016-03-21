@@ -26,18 +26,12 @@ public class CheckoutAdapter {
     private static final String CART_ITEM_PATTERN = "%s - %.2f сом - %d шт. ";
     // @formatter:on
 
-    public static String adapt(CartImpl cart, GorillaGymClientData clientData) {
+    public static String getAddressWithOrder(CartImpl cart, GorillaGymClientData clientData) {
         StringBuilder cartSb = new StringBuilder();
         for (Map.Entry<CartItem, Integer> cartItem : cart.getOrder().entrySet()) {
             cartSb.append(String.format(CART_ITEM_PATTERN, cartItem.getKey().getName(), cartItem.getKey().getPrice(), cartItem.getValue()));
         }
         String address = String.format(ADDRESS_AND_CART_PATTERN, cartSb.toString(), clientData.getAddress());
-        return String.format(CHECKOUT_PATTERN
-                , clientData.getEmail()
-                , clientData.getName()
-                , clientData.getPhone()
-                , address
-                , clientData.getCapture()
-                , clientData.getToken());
+        return address;
     }
 }

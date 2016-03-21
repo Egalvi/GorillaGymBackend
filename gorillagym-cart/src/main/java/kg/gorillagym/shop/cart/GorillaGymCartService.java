@@ -2,6 +2,7 @@ package kg.gorillagym.shop.cart;
 
 import com.squareup.okhttp.RequestBody;
 import kg.gorillagym.shop.cart.impl.CheckoutAdapter;
+import kg.gorillagym.shop.cart.impl.CheckoutResponse;
 import kg.gorillagym.shop.cart.impl.RestClient;
 import kg.gorillagym.shop.cart.impl.RestClientFactory;
 import org.apache.commons.io.IOUtils;
@@ -38,9 +39,15 @@ public class GorillaGymCartService implements CartService {
                 orderItems.add(new OrderItem(cartItem.getKey().getId(), cartItem.getValue()));
             }
         }
-        Call<RequestBody> stringCall = restClient.submitOrder(CheckoutAdapter.adapt((CartImpl) cart, (GorillaGymClientData) clientData));
+        GorillaGymClientData cd = (GorillaGymClientData) clientData;
+        Call<CheckoutResponse> stringCall = restClient.submitOrder(cd.getEmail()
+                , cd.getName()
+                , cd.getPhone()
+                , CheckoutAdapter.getAddressWithOrder((CartImpl) cart, cd)
+                , cd.getCapture()
+                , cd.getToken());
         try {
-            return stringCall.execute().body().toString();
+            return stringCall.execute().body().getError();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

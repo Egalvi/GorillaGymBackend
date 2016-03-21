@@ -1,6 +1,7 @@
 package kg.gorillagym.shop.cart;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import ru.egalvi.shop.Capture;
@@ -26,6 +27,7 @@ public class GorillaGymCartServiceIT {
     }
 
     @Test
+    @Ignore("Do not send data on every build. Just for rare checks")
     public void testCheckout() throws Exception {
         CartImpl cart = new CartImpl();
         cart.add(new CartItem() {
@@ -44,7 +46,7 @@ public class GorillaGymCartServiceIT {
                 return 4500;
             }
         }, 5);
-        String checkout = cartService.checkout(cart, new GorillaGymClientData("email", "name", "phone", "address", "token", "capture"));
+        String checkout = cartService.checkout(cart, new GorillaGymClientData("email@mail.ru", "test", "+996312654654", "address", "4567", "capture"));
         System.out.print(checkout);
     }
 }
