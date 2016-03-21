@@ -38,7 +38,8 @@ public class GorillaGymProductService implements ProductService {
                     product.setImageData(bytes);
                 } catch (IOException e) {
                     //TODO make own exception and handle it somewhere
-                    throw new RuntimeException(e);
+//                    throw new RuntimeException(e);
+                    product.setImageData(null);
                 } finally {
                     if (in != null) {
                         in.close();

@@ -18,6 +18,7 @@ public interface RestClient {
                                 , @Field("login") String login
                                 , @Field("phone") String phone
                                 , @Field("address") String address
+                                , @Field("cart_coast") String totalCost
                                 , @Field("imagestring") String imagestring
                                 , @Field("imagehash") String imagehash);
 

@@ -44,6 +44,7 @@ public class GorillaGymCartService implements CartService {
                 , cd.getName()
                 , cd.getPhone()
                 , CheckoutAdapter.getAddressWithOrder((CartImpl) cart, cd)
+                , Double.toString(cart.getTotalPrice())
                 , cd.getCapture()
                 , cd.getToken());
         try {
