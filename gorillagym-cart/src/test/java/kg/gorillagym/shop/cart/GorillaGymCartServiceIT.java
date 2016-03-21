@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import ru.egalvi.shop.Capture;
-import ru.egalvi.shop.CartItem;
-import ru.egalvi.shop.CartService;
-import ru.egalvi.shop.ClientData;
+import ru.egalvi.shop.*;
 import ru.egalvi.shop.impl.CartImpl;
 
 @Category(IntegrationTest.class)
@@ -46,7 +43,7 @@ public class GorillaGymCartServiceIT {
                 return 4500;
             }
         }, 5);
-        String checkout = cartService.checkout(cart, new GorillaGymClientData("email@mail.ru", "test", "+996312654654", "address", "4567", "capture"));
+        CheckoutResponse checkout = cartService.checkout(cart, new GorillaGymClientData("email@mail.ru", "test", "+996312654654", "address", "4567", "capture"));
         System.out.print(checkout);
     }
 }
