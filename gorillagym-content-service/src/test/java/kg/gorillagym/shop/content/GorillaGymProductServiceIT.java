@@ -27,4 +27,10 @@ public class GorillaGymProductServiceIT {
         List<Product> products = productService.getForCategory(categoryService.getAll().get(0));
         System.out.println(products);
     }
+
+    @Test
+    public void testGetOne() throws Exception {
+        Product product = productService.getProduct("5");
+        System.out.println(product);
+    }
 }

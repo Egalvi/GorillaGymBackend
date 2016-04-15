@@ -62,4 +62,40 @@ public class GorillaGymProductService implements ProductService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Product getProduct(String id) {
+        Call<List<Product>> products = restClient.getProductById(id);
+        try {
+            List<Product> productList = products.execute().body();
+            for (Product product : productList) {
+                String imageUrl = product.getImage();
+                byte[] cachedPicture = pictureCache.get(imageUrl);
+                if (cachedPicture != null) {
+                    product.setImageData(cachedPicture);
+                } else {
+                    InputStream in = null;
+                    try {
+                        URL url = new URL(imageUrl);
+                        in = url.openStream();
+                        byte[] bytes = IOUtils.toByteArray(in);
+                        product.setImageData(bytes);
+                        pictureCache.put(imageUrl, bytes);
+                    } catch (IOException e) {
+                        //TODO make own exception and handle it somewhere
+//                    throw new RuntimeException(e);
+                        product.setImageData(null);
+                    } finally {
+                        if (in != null) {
+                            in.close();
+                        }
+                    }
+                }
+            }
+            return productList.isEmpty() ? null : productList.get(0);
+        } catch (IOException e) {
+            //TODO make own exception and handle it somewhere
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package kg.gorillagym.shop.content;
 
-import static kg.gorillagym.shop.Constants.URL;
 import kg.gorillagym.shop.content.impl.RestClient;
 import kg.gorillagym.shop.content.impl.RestClientFactory;
 import org.apache.commons.io.IOUtils;
@@ -13,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+
+import static kg.gorillagym.shop.Constants.URL;
 
 /**
  */
@@ -47,6 +48,35 @@ public class GorillaGymProductService implements ProductService {
                 }
             }
             return productList;
+        } catch (IOException e) {
+            //TODO make own exception and handle it somewhere
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Product getProduct(String id) {
+        Call<List<Product>> products = restClient.getProductById(id);
+        try {
+            List<Product> productList = products.execute().body();
+            for (Product product : productList) {
+                InputStream in = null;
+                try {
+                    URL url = new URL(product.getImage());
+                    in = url.openStream();
+                    byte[] bytes = IOUtils.toByteArray(in);
+                    product.setImageData(bytes);
+                } catch (IOException e) {
+                    //TODO make own exception and handle it somewhere
+//                    throw new RuntimeException(e);
+                    product.setImageData(null);
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+            }
+            return productList.isEmpty() ? null : productList.get(0);
         } catch (IOException e) {
             //TODO make own exception and handle it somewhere
             throw new RuntimeException(e);

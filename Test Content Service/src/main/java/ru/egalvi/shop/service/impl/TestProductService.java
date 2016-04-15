@@ -30,4 +30,9 @@ public class TestProductService implements ProductService {
     public List<Product> getForCategory(Category category) {
         return categoryProductMap.get(category);
     }
+
+    @Override
+    public Product getProduct(String id) {
+        return null;
+    }
 }

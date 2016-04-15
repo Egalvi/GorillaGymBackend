@@ -2,6 +2,7 @@ package kg.gorillagym.shop.content.impl;
 
 import static kg.gorillagym.shop.Constants.CATEGORIES;
 import static kg.gorillagym.shop.Constants.PRODUCTS;
+import static kg.gorillagym.shop.Constants.PRODUCT;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -19,4 +20,7 @@ public interface RestClient {
 
     @GET(PRODUCTS)
     Call<List<Product>> getProductsForCategory(@Query("category") String categoryId);
+
+    @GET(PRODUCT)
+    Call<List<Product>> getProductById(@Query("id") String productId);
 }

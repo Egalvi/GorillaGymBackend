@@ -1,16 +1,15 @@
 package kg.gorillagym.shop.content;
 
 import kg.gorillagym.shop.content.impl.RestClient;
+import org.junit.Before;
+import org.junit.Test;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.http.Query;
+import ru.egalvi.shop.gorillagym.model.Category;
 import ru.egalvi.shop.gorillagym.model.CategorySortComparator;
 import ru.egalvi.shop.gorillagym.model.Product;
-
-import org.junit.Before;
-import org.junit.Test;
-import ru.egalvi.shop.gorillagym.model.Category;
 import ru.egalvi.shop.gorillagym.service.CategoryService;
 
 import java.io.IOException;
@@ -79,6 +78,11 @@ public class GorillaGymCategoryServiceTest {
         }
 
         public Call<List<Product>> getProductsForCategory(@Query("category") String categoryId) {
+            return null;
+        }
+
+        @Override
+        public Call<List<Product>> getProductById(@Query("id") String productId) {
             return null;
         }
     }
